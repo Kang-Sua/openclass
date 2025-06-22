@@ -43,6 +43,10 @@ def next_step():
 def prev_step():
     st.session_state.current_step -= 1
 
+# 특정 단계로 바로 이동하는 함수
+def go_to_step(step_number):
+    st.session_state.current_step = step_number
+
 # --- PDF 생성 함수 ---
 # reportlab 라이브러리를 사용하여 작성된 편지 내용을 PDF 파일로 생성합니다.
 def generate_pdf(character, event, feelings_emojis, shared_feelings, letter_content):
@@ -88,21 +92,30 @@ def generate_pdf(character, event, feelings_emojis, shared_feelings, letter_cont
 # Streamlit 페이지의 기본 설정 (제목, 레이아웃)을 지정합니다.
 st.set_page_config(page_title="『까만 달걀』 교육용 앱", layout="centered")
 
-st.title("『까만 달걀』 교육용 앱")
-st.write("초등학교 6학년을 위한 교육용 앱입니다.")
-st.write("도서 『까만 달걀』을 읽고, 책 속 등장인물에게 편지를 쓰며 공감 능력과 감정 표현 능력을 길러보세요.")
+# 앱 제목 및 설명 변경
+st.title("까만 달걀을 읽고 등장인물에게 마음을 나누는 글쓰기 앱")
+st.write("책 속 인물의 감정을 이해하고, 내 마음을 담아 글로 전해 보세요.")
 
-# 현재 화면 단계를 시각적으로 표시하는 내비게이션 바
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4) # 각 화면에 해당하는 4개의 컬럼 생성
+# 현재 화면 단계를 시각적으로 표시하는 내비게이션 바 (버튼으로 변경)
+nav_titles = {
+    1: "등장인물을 선택해요",
+    2: "일어난 사건을 떠올려요",
+    3: "나누려는 마음을 생각해요",
+    4: "나누려는 마음을 담아 글을 써보세요"
+}
 
-for i in range(1, 5):
-    with globals()[f"nav_col{i}"]:
-        if i == st.session_state.current_step:
-            # 현재 화면은 파란색 볼드체로 표시
-            st.markdown(f"**<span style='color: blue;'>화면 {i}</span>**", unsafe_allow_html=True)
-        else:
-            # 다른 화면은 일반 텍스트로 표시
-            st.markdown(f"화면 {i}")
+nav_cols = st.columns(4) # 각 화면에 해당하는 4개의 컬럼 생성
+
+for i, col in enumerate(nav_cols, 1):
+    with col:
+        # 현재 화면은 비활성화된 (클릭 불가능한) 버튼으로 표시하여 현재 위치를 강조
+        st.button(
+            nav_titles[i],
+            on_click=go_to_step,
+            args=(i,),
+            disabled=(i == st.session_state.current_step),
+            key=f"nav_button_{i}" # 고유한 키 부여
+        )
 
 st.markdown("---") # 내비게이션 바 아래 구분선
 
@@ -134,7 +147,7 @@ elif st.session_state.current_step == 2:
         value=st.session_state.event_description, # 세션 상태 값으로 초기화
         height=150, # 텍스트 영역의 높이 설정
         key="event_text_area",
-        placeholder="예: 아랑이가 엄마에게 거짓말을 하고 혼자 학교에 갔을 때" # 입력 예시
+        placeholder="예: 아랑이가 엄마랑 같이 피자가게 가는 길에 엄마를 잃어버렸던 일" # 입력 예시
     )
 
     st.write("그 상황에서 등장인물의 마음은 어땠을까요? 감정을 이모지로 표현하고 선택해 보세요. (여러 개 선택 가능)")
@@ -165,11 +178,11 @@ elif st.session_state.current_step == 2:
     with col1:
         st.button("이전 화면", on_click=prev_step, help="이전 단계인 '등장인물을 선택해요' 화면으로 돌아갑니다.")
     with col2:
-        st.button("다음 화면", on_click=next_step, help="다음 단계인 '나눌 마음을 생각해요' 화면으로 이동합니다.")
+        st.button("다음 화면", on_click=next_step, help="다음 단계인 '나누려는 마음을 생각해요' 화면으로 이동합니다.")
 
-# --- 화면 3: 나눌 마음을 생각해요 ---
+# --- 화면 3: 나누려는 마음을 생각해요 ---
 elif st.session_state.current_step == 3:
-    st.header("3. 나눌 마음을 생각해요")
+    st.header("3. 나누려는 마음을 생각해요")
     st.write("등장인물에게 어떤 마음을 나누고자 하는지, 어떤 마음을 전달하고 싶은지 작성해 보세요.")
     # 나누고 싶은 마음을 입력하는 text_area 위젯
     st.session_state.shared_feelings = st.text_area(
@@ -177,7 +190,7 @@ elif st.session_state.current_step == 3:
         value=st.session_state.shared_feelings, # 세션 상태 값으로 초기화
         height=150,
         key="shared_feelings_text_area",
-        placeholder="예: 아랑이의 용기에 박수를 보내주고 싶어요."
+        placeholder="예: 아랑이가 엄마의 마음을 좀 더 이해해줬으면 좋겠어요."
     )
 
     st.markdown("---")
@@ -276,5 +289,4 @@ elif st.session_state.current_step == 4:
     # 마지막 화면의 '이전 화면' 버튼 (오른쪽에 배치)
     col1, col2 = st.columns(2)
     with col1:
-        st.button("이전 화면", on_click=prev_step, help="이전 단계인 '나눌 마음을 생각해요' 화면으로 돌아갑니다.")
-
+        st.button("이전 화면", on_click=prev_step, help="이전 단계인 '나누려는 마음을 생각해요' 화면으로 돌아갑니다.")
