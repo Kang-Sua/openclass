@@ -12,6 +12,7 @@ import io
 # 'NanumGothic.ttf'와 같은 한글 폰트 파일이 app.py와 동일한 디렉토리에 있어야 합니다.
 # 폰트 파일이 없으면 PDF에서 한글이 깨지거나 표시되지 않을 수 있습니다.
 try:
+    # 폰트 파일이 현재 스크립트와 같은 디렉토리에 있는지 확인합니다.
     pdfmetrics.registerFont(TTFont('NanumGothic', 'NanumGothic.ttf'))
     KOREAN_FONT_REGISTERED = True
 except Exception as e:
@@ -140,9 +141,9 @@ elif st.session_state.current_step == 2:
     # 감정 이름과 해당 이모지 매핑 딕셔너리
     emotions = {
         "무섭다": "😨", "슬프다": "😢", "외롭다": "😔", "짜증나다": "😤", "화나다": "😡",
-        "신나다": "🤩", "행복하다": "😊", "당황하다": "😳", "미안하다": "🙏", "창피하다": "😳", # 창피하다 이모지 수정
+        "신나다": "🤩", "행복하다": "😊", "당황하다": "😳", "미안하다": "🙏", "창피하다": "😳",
         "억울하다": "😩", "즐겁다": "😄", "답답하다": "😐", "걱정되다": "😟", "설레다": "💖",
-        "샘나다": "😒", "실망하다": "😞", "울고싶다": "😭", "부끄럽다": "😳", "재미있다": "😂", # 부끄럽다 이모지 수정
+        "샘나다": "😒", "실망하다": "😞", "울고싶다": "😭", "부끄럽다": "😳", "재미있다": "😂",
         "편안하다": "😌", "기쁘다": "🥳", "얄밉다": "😠", "속상하다": "💔", "뿌듯하다": "👍",
         "우울하다": "😔", "서운하다": "😔", "만족하다": "😌", "불안하다": "😬", "놀라다": "😲",
         "쓸쓸하다": "🍂", "신경질나다": "😠", "아쉽다": "😟", "약오르다": "😤", "후회되다": "🤦‍♀️"
@@ -207,7 +208,8 @@ elif st.session_state.current_step == 4:
         "\n"
         "\n"
     )
-    # 편지 내용이 비어있거나, 이전 내용이 첫인사 템플릿과 동일하다면 템플릿으로 초기화
+    # 편지 내용이 완전히 비어있거나, 기본 템플릿과 동일할 경우에만 템플릿으로 초기화합니다.
+    # 사용자가 내용을 입력하기 시작하면 템플릿이 다시 채워지지 않도록 합니다.
     if not st.session_state.letter_content.strip() or st.session_state.letter_content.strip() == initial_template.strip():
         st.session_state.letter_content = initial_template.strip()
 
@@ -246,9 +248,10 @@ elif st.session_state.current_step == 4:
     with col_print_btn:
         # PDF 출력 버튼 활성화 조건을 설정합니다.
         # 등장인물이 선택되었고, 사건 설명이 있으며, 편지 내용이 기본 템플릿 이상으로 작성되었을 때 활성화됩니다.
+        # 사용자가 편지 내용 입력 칸에 실제 텍스트를 입력해야 버튼이 나타납니다.
         if st.session_state.selected_character and \
            st.session_state.event_description and \
-           st.session_state.letter_content.strip() != initial_template.strip(): # 템플릿 내용만 있을 경우 PDF 출력 비활성화
+           st.session_state.letter_content.strip() != initial_template.strip():
             pdf_buffer = generate_pdf(
                 st.session_state.selected_character,
                 st.session_state.event_description,
@@ -265,6 +268,8 @@ elif st.session_state.current_step == 4:
                 help="작성된 편지를 PDF 파일로 다운로드합니다."
             )
         else:
+            # PDF 출력 버튼이 보이지 않을 때 나타나는 안내 메시지입니다.
+            # 이 메시지가 보인다면, 편지 내용 입력 칸에 실제 편지 내용을 작성해야 합니다.
             st.info("PDF 출력을 위해 모든 필수 항목(등장인물, 사건, 편지 내용)을 작성해주세요.")
 
     st.markdown("---")
@@ -272,3 +277,4 @@ elif st.session_state.current_step == 4:
     col1, col2 = st.columns(2)
     with col1:
         st.button("이전 화면", on_click=prev_step, help="이전 단계인 '나눌 마음을 생각해요' 화면으로 돌아갑니다.")
+
