@@ -255,7 +255,7 @@ elif st.session_state.current_step == 4:
     # '이전 화면'과 '다음 화면' 버튼
     col1, col2 = st.columns(2)
     with col1:
-        st.button("이전 화면", on_click=prev_step, help="이전 단계인 '일어난 사건을 떠올려요' 화면으로 돌아갑니다.")
+        st.button("이전 화면", on_click=prev_step, help="이전 단계인 '일어난 사건을 떠올려요' 화면으로 돌아갑합니다.")
     with col2:
         st.button("다음 화면", on_click=next_step, help="다음 단계인 '나누려는 마음을 담아 글을 써 보세요.' 화면으로 이동합니다.")
 
@@ -270,25 +270,26 @@ elif st.session_state.current_step == 5:
     with col_hints:
         # 각 힌트와 입력 칸의 위치를 맞추기 위한 미세 조정 (trial and error 기반)
         # `st.markdown(f"{st.session_state.selected_character}에게")`의 높이와 간격을 고려
+        # text_area 높이를 80으로 늘려 힌트 정렬에 더 유연하게 대응
         st.markdown("<div style='height: 45px;'></div>", unsafe_allow_html=True) # "받는이에게" 줄과 "첫인사" 힌트 간격
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 고려하여 중앙 정렬
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 (80px) 고려하여 중앙 정렬
 
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (70px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>일어난 사건</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 고려하여 중앙 정렬
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 (80px) 고려하여 중앙 정렬
 
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (70px)를 반영하여 다음 힌트 위치 조정
-        st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙에 맞추기 위해 조정
+        st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트 (40px)
+        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙 (80px)에 맞추기 위해 조정 ( (80-40)/2 = 20 )
 
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (70px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 고려하여 중앙 정렬
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 (80px) 고려하여 중앙 정렬
 
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (70px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>끝인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 높이 고려하여 중앙 정렬
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 높이 (80px) 고려하여 중앙 정렬
 
     with col_letter:
         st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 일반 텍스트로 표시
@@ -296,35 +297,35 @@ elif st.session_state.current_step == 5:
         st.session_state.letter_intro = st.text_area(
             "첫인사를 작성해 보세요.",
             value=st.session_state.letter_intro,
-            height=70,
+            height=80, # 높이 조정
             key="letter_intro_area",
             label_visibility="collapsed" # 레이블 숨김 (힌트가 대신 역할)
         )
         st.session_state.letter_event_detail = st.text_area(
             "일어난 사건을 자세히 작성해 보세요.",
             value=st.session_state.letter_event_detail,
-            height=70,
+            height=80, # 높이 조정
             key="letter_event_detail_area",
             label_visibility="collapsed"
         )
         st.session_state.letter_my_thoughts_actions = st.text_area(
             "일어난 사건에 대한 자신의 생각이나 행동을 작성해 보세요.",
             value=st.session_state.letter_my_thoughts_actions,
-            height=70,
+            height=80, # 높이 조정
             key="letter_my_thoughts_actions_area",
             label_visibility="collapsed"
         )
         st.session_state.letter_shared_feelings_detail = st.text_area(
             "나누려는 마음을 작성해 보세요.",
             value=st.session_state.letter_shared_feelings_detail,
-            height=70,
+            height=80, # 높이 조정
             key="letter_shared_feelings_detail_area",
             label_visibility="collapsed"
         )
         st.session_state.letter_closing = st.text_area(
             "끝인사를 작성해 보세요.",
             value=st.session_state.letter_closing,
-            height=70,
+            height=80, # 높이 조정
             key="letter_closing_area",
             label_visibility="collapsed"
         )
@@ -332,7 +333,7 @@ elif st.session_state.current_step == 5:
             "글을 쓴 사람", # '글을 쓴 사람'은 힌트가 아닌 label로 표시
             value=st.session_state.letter_writer_name,
             key="letter_writer_name_input",
-            placeholder="예: OO이가, OOO 드림"
+            placeholder="예: OO이가,OOO 드림"
         )
 
 
