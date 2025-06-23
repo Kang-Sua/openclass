@@ -272,15 +272,15 @@ elif st.session_state.current_step == 5:
         # `st.markdown(f"{st.session_state.selected_character}에게")`의 높이와 간격을 고려
         st.markdown("<div style='height: 85px;'></div>", unsafe_allow_html=True) # "받는이에게" 줄과 "첫인사" 힌트 간격 (+2cm)
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 135px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 고려 (+2cm)
+        st.markdown("<div style='height: 120px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 고려 (+2cm)
         st.markdown("<b>일어난 사건</b>", unsafe_allow_html=True)
         st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 고려
         st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트
-        st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True) # `letter_my_thoughts_actions` text_area 높이 고려 (-1cm)
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_my_thoughts_actions` text_area 높이 고려 (-1cm)
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 0px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 고려 (-2cm)
+        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 고려 (-2cm)
         st.markdown("<b>끝인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 아래 공백
+        st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 아래 공백
 
     with col_letter:
         st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 일반 텍스트로 표시
