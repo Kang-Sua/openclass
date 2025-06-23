@@ -178,7 +178,7 @@ if st.session_state.current_step == 1:
 # --- 화면 2: 마음을 전하고 싶은 등장인물을 선택해요 ---
 elif st.session_state.current_step == 2:
     st.header("2. 마음을 전하고 싶은 등장인물을 선택해요")
-    characters = ["아랑", "아랑이의 어머니", "재현", "재현이의 아버지", "성구", "달이", "운철이"]
+    characters = ["아랑", "아랑이의 어머니", "재현", "재현이의 아버지", "성구", "달이", "운철이"] # "달이의 아버지"는 받는 대상에서는 제외
     # 편지를 받을 등장인물 선택을 위한 selectbox 위젯
     st.session_state.selected_character = st.selectbox(
         "편지를 받을 대상(등장인물)을 선택하세요.", # 제목 변경
@@ -331,6 +331,7 @@ elif st.session_state.current_step == 5:
     st.session_state.check_event_detail = st.radio(
         "1) 일어난 사건을 자세히 밝혔나요?",
         options=["예", "아니오"],
+        # 첫 로드 시 기본값 설정 (None이면 '예'로 초기화)
         index=["예", "아니오"].index(st.session_state.check_event_detail) if st.session_state.check_event_detail in ["예", "아니오"] else 0,
         key="check_event_detail_radio",
         horizontal=True
@@ -374,44 +375,50 @@ elif st.session_state.current_step == 5:
             st.success("편지 내용이 앱 내에 임시 저장되었습니다. (앱을 새로고침하거나 닫으면 내용이 사라질 수 있습니다.)")
 
     with col_print_btn:
-        if all_checked_yes:
-            # 모든 내용이 채워져 있고, 점검 항목이 모두 '예'일 때만 PDF 버튼 활성화
-            if st.session_state.selected_character and \
-               st.session_state.event_description and \
-               st.session_state.letter_intro and \
-               st.session_state.letter_event_detail and \
-               st.session_state.letter_my_thoughts_actions and \
-               st.session_state.letter_shared_feelings_detail and \
-               st.session_state.letter_closing and \
-               st.session_state.letter_writer_name:
+        # PDF 출력 버튼 활성화 조건을 설정합니다.
+        # 모든 점검 항목이 '예'이고, 필수 편지 내용 칸이 모두 채워져 있을 때 활성화됩니다.
+        if all_checked_yes and \
+           st.session_state.writer_character and \
+           st.session_state.selected_character and \
+           st.session_state.event_description and \
+           st.session_state.shared_feelings and \
+           st.session_state.letter_intro and \
+           st.session_state.letter_event_detail and \
+           st.session_state.letter_my_thoughts_actions and \
+           st.session_state.letter_shared_feelings_detail and \
+           st.session_state.letter_closing and \
+           st.session_state.letter_writer_name:
 
-                pdf_buffer = generate_pdf(
-                    st.session_state.selected_character,
-                    st.session_state.event_description,
-                    st.session_state.selected_emojis,
-                    st.session_state.shared_feelings,
-                    st.session_state.letter_intro,
-                    st.session_state.letter_event_detail,
-                    st.session_state.letter_my_thoughts_actions,
-                    st.session_state.letter_shared_feelings_detail,
-                    st.session_state.letter_closing,
-                    st.session_state.letter_writer_name
-                )
-                st.download_button(
-                    label="PDF 출력",
-                    data=pdf_buffer,
-                    file_name=f"{st.session_state.selected_character}_편지.pdf",
-                    mime="application/pdf",
-                    help="작성된 편지를 PDF 파일로 다운로드합니다."
-                )
-            else:
-                st.info("PDF 출력을 위해 모든 편지 내용을 작성하고 점검 사항을 확인해주세요.")
+            pdf_buffer = generate_pdf(
+                st.session_state.selected_character,
+                st.session_state.event_description,
+                st.session_state.selected_emojis,
+                st.session_state.shared_feelings,
+                st.session_state.letter_intro,
+                st.session_state.letter_event_detail,
+                st.session_state.letter_my_thoughts_actions,
+                st.session_state.letter_shared_feelings_detail,
+                st.session_state.letter_closing,
+                st.session_state.letter_writer_name
+            )
+            st.download_button(
+                label="PDF 출력",
+                data=pdf_buffer,
+                file_name=f"{st.session_state.selected_character}_편지.pdf",
+                mime="application/pdf",
+                help="작성된 편지를 PDF 파일로 다운로드합니다."
+            )
         else:
-            st.warning("답변한 내용을 참고해 글을 고쳐 써 봅시다. 모든 점검 항목을 '예'로 선택해야 PDF를 출력할 수 있습니다.")
+            # 모든 점검 항목이 '예'가 아니면 경고 메시지 표시
+            if not all_checked_yes:
+                st.warning("답변한 내용을 참고해 글을 고쳐 써 봅시다. 모든 점검 항목을 '예'로 선택해야 PDF를 출력할 수 있습니다.")
+            # 필수 편지 내용이 누락된 경우 안내 메시지 표시
+            else:
+                st.info("PDF 출력을 위해 모든 필수 항목(편지를 쓰는 '나', 등장인물, 사건, 나누려는 마음 요약, 편지 세부 내용)을 작성하고 점검 사항을 확인해주세요.")
+
 
     st.markdown("---")
     # 마지막 화면의 '이전 화면' 버튼 (오른쪽에 배치)
     col1, col2 = st.columns(2)
     with col1:
         st.button("이전 화면", on_click=prev_step, help="이전 단계인 '나누려는 마음을 생각해요' 화면으로 돌아갑니다.")
-
