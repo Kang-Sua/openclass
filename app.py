@@ -205,7 +205,7 @@ elif st.session_state.current_step == 3:
         value=st.session_state.event_description, # 세션 상태 값으로 초기화
         height=150, # 텍스트 영역의 높이 설정
         key="event_text_area",
-        placeholder="예: 아랑이가 낱말 카드를 만들어 엄마에게 한국말을 알려줬을 때" # 입력 예시
+        placeholder="예: 아랑이가 엄마에게 거짓말을 하고 혼자 학교에 갔을 때" # 입력 예시
     )
 
     st.write("그 상황에서 등장인물의 마음은 어땠을까요? 감정을 이모지로 표현하고 선택해 보세요. (여러 개 선택 가능)")
@@ -248,7 +248,7 @@ elif st.session_state.current_step == 4:
         value=st.session_state.shared_feelings, # 세션 상태 값으로 초기화
         height=150,
         key="shared_feelings_text_area",
-        placeholder="예: 아랑이가 엄마를 향한 자신의 마음을 깨닫고 한국말을 가르쳐준 행동에 잘했다고 칭찬을 해주고 싶어요."
+        placeholder="예: 아랑이의 용기에 박수를 보내주고 싶어요."
     )
 
     st.markdown("---")
@@ -270,17 +270,30 @@ elif st.session_state.current_step == 5:
     with col_hints:
         # 각 힌트와 입력 칸의 위치를 맞추기 위한 미세 조정 (trial and error 기반)
         # `st.markdown(f"{st.session_state.selected_character}에게")`의 높이와 간격을 고려
-        st.markdown("<div style='height: 85px;'></div>", unsafe_allow_html=True) # "받는이에게" 줄과 "첫인사" 힌트 간격 (+2cm)
+        # text_area 높이 (70px), 한 줄 힌트 높이 (약 20px), 두 줄 힌트 높이 (약 40px) 기준으로 중앙 정렬 시도
+        # 첫인사: 2cm 정도 내려달라는 요청 반영
+        st.markdown("<div style='height: 45px;'></div>", unsafe_allow_html=True) # 기존 10px -> 45px (25px + 20px = 45px)
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 120px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 고려 (+2cm)
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # 나머지 공간 채우기 (70-20-25)
+        
+        # 일어난 사건: 2cm 내려달라는 요청 반영
+        st.markdown("<div style='height: 45px;'></div>", unsafe_allow_html=True) # 기존 60px -> 45px (25px + 20px = 45px)
         st.markdown("<b>일어난 사건</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 고려
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # 나머지 공간 채우기 (70-20-25)
+
+        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True) # 기존 40px -> 15px (25px + (70-40)/2 = 25+15=40 -> 25px + ((70-40)/2 - 25) for previous div + (70-40)/2)
         st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트
-        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # `letter_my_thoughts_actions` text_area 높이 고려 (-1cm)
+        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True) # 나머지 공간 채우기 (70-40-15)
+        
+        # 나누려는 마음: 1cm 올려달라는 요청 반영
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # 기존 40px -> 30px (25px + (70-20)/2 = 25+25 = 50 -> 25+25-10 = 40)
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 고려 (-2cm)
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # 나머지 공간 채우기 (70-20-25)
+        
+        # 끝인사: 2cm 올려달라는 요청 반영
+        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True) # 기존 60px -> 20px (25px + (70-20)/2 = 50 -> 25+25-20 = 30)
         st.markdown("<b>끝인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 아래 공백
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True) # 나머지 공간 채우기 (70-20-25)
 
     with col_letter:
         st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 일반 텍스트로 표시
@@ -324,7 +337,7 @@ elif st.session_state.current_step == 5:
             "글을 쓴 사람", # '글을 쓴 사람'은 힌트가 아닌 label로 표시
             value=st.session_state.letter_writer_name,
             key="letter_writer_name_input",
-            placeholder="예: OO이가, OOO드림"
+            placeholder="예: 김철수 드림"
         )
 
 
