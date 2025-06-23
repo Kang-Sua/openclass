@@ -205,7 +205,7 @@ elif st.session_state.current_step == 3:
         value=st.session_state.event_description, # 세션 상태 값으로 초기화
         height=150, # 텍스트 영역의 높이 설정
         key="event_text_area",
-        placeholder="예: 아랑이가 백화점 근처에서 엄마를 잃어버렸을 때" # 입력 예시
+        placeholder="예: 아랑이가 낱말 카드를 만들어 엄마에게 한국말을 알려줬을 때" # 입력 예시
     )
 
     st.write("그 상황에서 등장인물의 마음은 어땠을까요? 감정을 이모지로 표현하고 선택해 보세요. (여러 개 선택 가능)")
@@ -248,7 +248,7 @@ elif st.session_state.current_step == 4:
         value=st.session_state.shared_feelings, # 세션 상태 값으로 초기화
         height=150,
         key="shared_feelings_text_area",
-        placeholder="예: 아랑이가 엄마를 향한 자신의 마음을 깨닫고 한국말을 가르쳐준 행동에 잘했다고 칭찬을 해주고 싶어요."
+        placeholder="예: 아랑이가 엄마를 향한 자신의 마음을 깨닫고 한국말을 가르쳐준 행동에 잘했다고 칭찬을 해주고 싶어요요."
     )
 
     st.markdown("---")
@@ -267,7 +267,7 @@ elif st.session_state.current_step == 5:
     # 편지 내용 입력 영역과 힌트 영역을 컬럼으로 분리하여 나란히 표시
     col_hints, col_letter = st.columns([1, 4]) # 힌트 컬럼을 편지 컬럼보다 좁게 설정
 
-with col_hints:
+    with col_hints:
         # 첫인사 힌트 정렬: 수신인 이름 라인 (col_letter)과 첫 번째 text_area의 높이를 고려하여 조정
         st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
@@ -283,6 +283,7 @@ with col_hints:
         st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 끝인사 text_area 아래 공백
 
     with col_letter:
+        # '<b>' 태그를 제거하여 볼드체 스타일을 없앰
         st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 제목처럼 표시
 
         st.session_state.letter_intro = st.text_area(
@@ -326,6 +327,7 @@ with col_hints:
             key="letter_writer_name_input",
             placeholder="예: OO이가, OOO 드림"
         )
+
 
     st.markdown("---")
     st.subheader("나누려는 마음 글쓰기를 점검해 봅시다")
@@ -425,3 +427,4 @@ with col_hints:
     col1, col2 = st.columns(2)
     with col1:
         st.button("이전 화면", on_click=prev_step, help="이전 단계인 '나누려는 마음을 생각해요' 화면으로 돌아갑니다.")
+
