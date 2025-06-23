@@ -275,17 +275,17 @@ elif st.session_state.current_step == 5:
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 (80px) 고려하여 중앙 정렬
 
-        st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>일어난 사건</b>", unsafe_allow_html=True)
         st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 (80px) 고려하여 중앙 정렬
 
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트 (40px)
-        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙 (80px)에 맞추기 위해 조정 ( (80-40)/2 = 20 )
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙 (80px)에 맞추기 위해 조정 ( (80-40)/2 = 20 )
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 (80px) 고려하여 중앙 정렬
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 (80px) 고려하여 중앙 정렬
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>끝인사</b>", unsafe_allow_html=True)
