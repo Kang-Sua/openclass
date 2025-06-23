@@ -72,7 +72,7 @@ def generate_pdf(recipient_character, event_desc, selected_emojis, shared_feelin
                  intro, event_detail, my_thoughts, shared_feelings_detail, closing, writer_name):
     buffer = io.BytesIO() # PDF 데이터를 저장할 메모리 버퍼를 생성합니다.
     doc = SimpleDocTemplate(buffer, pagesize=letter) # PDF 문서 객체를 생성합니다.
-    styles = getSampleStyleSheet() # 기본 스타일 시트를 가져옵니다.
+    styles = getSampleStyleStyleSheet() # 기본 스타일 시트를 가져옵니다.
 
     # 한글 폰트가 등록되었는지 확인하고, 적절한 폰트 스타일을 적용합니다.
     korean_style = styles['Normal']
@@ -205,7 +205,7 @@ elif st.session_state.current_step == 3:
         value=st.session_state.event_description, # 세션 상태 값으로 초기화
         height=150, # 텍스트 영역의 높이 설정
         key="event_text_area",
-        placeholder="예: 아랑이가 낱말 카드를 만들어 엄마에게 한국말을 알려줬을 때" # 입력 예시
+        placeholder="예: 아랑이가 엄마에게 거짓말을 하고 혼자 학교에 갔을 때" # 입력 예시
     )
 
     st.write("그 상황에서 등장인물의 마음은 어땠을까요? 감정을 이모지로 표현하고 선택해 보세요. (여러 개 선택 가능)")
@@ -248,7 +248,7 @@ elif st.session_state.current_step == 4:
         value=st.session_state.shared_feelings, # 세션 상태 값으로 초기화
         height=150,
         key="shared_feelings_text_area",
-        placeholder="예: 아랑이가 엄마를 향한 자신의 마음을 깨닫고 한국말을 가르쳐준 행동에 잘했다고 칭찬을 해주고 싶어요요."
+        placeholder="예: 아랑이의 용기에 박수를 보내주고 싶어요."
     )
 
     st.markdown("---")
@@ -268,23 +268,22 @@ elif st.session_state.current_step == 5:
     col_hints, col_letter = st.columns([1, 4]) # 힌트 컬럼을 편지 컬럼보다 좁게 설정
 
     with col_hints:
-        # 첫인사 힌트 정렬: 수신인 이름 라인 (col_letter)과 첫 번째 text_area의 높이를 고려하여 조정
-        st.markdown("<div style='height: 30px;'></div>", unsafe_allow_html=True)
+        # 각 힌트와 입력 칸의 위치를 맞추기 위한 미세 조정 (trial and error 기반)
+        # `st.markdown(f"{st.session_state.selected_character}에게")`의 높이와 간격을 고려
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # "받는이에게" 줄과 "첫인사" 힌트 간격
         st.markdown("<b>첫인사</b>", unsafe_allow_html=True)
-        # 각 힌트와 다음 입력 칸 사이의 간격 조정 (해당 text_area의 높이와 유사하게 설정)
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_intro` text_area 높이 고려
         st.markdown("<b>일어난 사건</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True)
-        st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 줄바꿈 적용
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_event_detail` text_area 높이 고려
+        st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트
+        st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True) # `letter_my_thoughts_actions` text_area 높이 고려
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_shared_feelings_detail` text_area 높이 고려
         st.markdown("<b>끝인사</b>", unsafe_allow_html=True)
-        st.markdown("<div style='height: 70px;'></div>", unsafe_allow_html=True) # 끝인사 text_area 아래 공백
+        st.markdown("<div style='height: 60px;'></div>", unsafe_allow_html=True) # `letter_closing` text_area 높이 고려
 
     with col_letter:
-        # '<b>' 태그를 제거하여 볼드체 스타일을 없앰
-        st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 제목처럼 표시
+        st.markdown(f"{st.session_state.selected_character}에게") # 받는 사람 이름은 일반 텍스트로 표시
 
         st.session_state.letter_intro = st.text_area(
             "첫인사를 작성해 보세요.",
@@ -325,7 +324,7 @@ elif st.session_state.current_step == 5:
             "글을 쓴 사람", # '글을 쓴 사람'은 힌트가 아닌 label로 표시
             value=st.session_state.letter_writer_name,
             key="letter_writer_name_input",
-            placeholder="예: OO이가, OOO 드림"
+            placeholder="예: 김철수 드림"
         )
 
 
