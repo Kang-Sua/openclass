@@ -281,7 +281,7 @@ elif st.session_state.current_step == 5:
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>일어난 사건에 대한<br>자신의 생각이나 행동</b>", unsafe_allow_html=True) # 2줄 힌트 (40px)
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙 (80px)에 맞추기 위해 조정 ( (80-40)/2 = 20 )
+        st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True) # 2줄 힌트를 text_area 중앙 (80px)에 맞추기 위해 조정 ( (80-40)/2 = 20 )
 
         st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True) # 이전 text_area 높이 (80px)를 반영하여 다음 힌트 위치 조정
         st.markdown("<b>나누려는 마음</b>", unsafe_allow_html=True)
