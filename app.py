@@ -128,10 +128,10 @@ def generate_pdf(recipient_character, event_desc, selected_emojis, shared_feelin
 
 # --- 메인 스트림릿 앱 레이아웃 ---
 # Streamlit 페이지의 기본 설정 (제목, 레이아웃)을 지정합니다.
-st.set_page_config(page_title="「까만 달걀」을 읽고 등장인물에게   마음을 나누는 글쓰기 앱", layout="centered")
+st.set_page_config(page_title="「까만 달걀」 속 인물에게 내 마음을 전하는 글쓰기 앱", layout="centered")
 
 # 앱 제목 및 설명 변경
-st.title("「까만 달걀」을 읽고 등장인물에게   마음을 나누는 글쓰기 앱")
+st.title("「까만 달걀」 속 인물에게 내 마음을 전하는 글쓰기 앱")
 st.write("책 속 등장인물의 감정을 이해하고, 내 마음을 전하는 글을 써 보세요.")
 
 # 현재 화면 단계를 시각적으로 표시하는 내비게이션 바 (버튼으로 변경)
